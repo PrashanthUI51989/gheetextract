@@ -136,10 +136,15 @@
           return;
         }
         
-        console.log(files);
+          const output = files.filter(student => file.mimeType === "application/vnd.google-apps.spreadsheet");
+        
+  
         // Flatten to string to display
-        const output = files.reduce(
-            (str, file) => `${str} ${file.name} (${file.id})  (${file.mimeType}) \n`,'Files:\n');
+       // const output = files.reduce(
+        //    (str, file) => `${str} ${file.name} (${file.id})  (${file.mimeType}) \n`,'Files:\n');
+        
+        console.log(output);
+        
         document.getElementById('content').innerText = output;
       }
     </script>
