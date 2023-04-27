@@ -206,15 +206,13 @@ async function listFiles() {
 
     for (var i = 0; i < output.length; i++) {
 
-        string += output[i].name + "  " + output[i].id + "  " + output[i].mimeType + "\n"      
-
-         await batchGetValues(output[i].id);
-      
-
+        string += output[i].name + "  " + output[i].id + "  " + output[i].mimeType + "\n";    
     };
 
 
     document.getElementById('content').innerText = string; 
+  
+   await batchGetValues("1XqWdR9SZ4Zx0vCal6T1zlhceWrLyrgsKvkMyKwb3V8o");
   
   
 }
