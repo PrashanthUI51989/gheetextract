@@ -135,6 +135,8 @@
           document.getElementById('content').innerText = 'No files found.';
           return;
         }
+        
+        console.log(files);
         // Flatten to string to display
         const output = files.reduce(
             (str, file) => `${str}${file.name} (${file.id})\n`,
