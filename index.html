@@ -12,6 +12,7 @@
     <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
 
     <pre id="content" style="white-space: pre-wrap;"></pre>
+     <pre id="content1" style="white-space: pre-wrap;"></pre>
 
     <script type="text/javascript">
       /* exported gapiLoaded */
@@ -115,6 +116,31 @@
           document.getElementById('signout_button').style.visibility = 'hidden';
         }
       }
+  function batchGetValues(spreadsheetId) {
+    
+  let ranges = [   
+    "A2:C4"
+  ];
+  
+  try {
+    gapi.client.sheets.spreadsheets.values.batchGet({
+      spreadsheetId: spreadsheetId,
+      ranges: ranges,
+    }).then((response) => {
+      
+      const result = response.result;
+      
+      document.getElementById('content1').innerText  =  response.result;
+      
+      //console.log(`${result.valueRanges.length} ranges retrieved.`);
+      
+    });
+  } catch (err) {
+    
+    document.getElementById('content1').innerText = err.message;
+    return;
+  }
+}
 
       /**
        * Print metadata for first 10 files.
@@ -140,8 +166,12 @@
         
         let string ="" ;
         
-        for(var i =0 ; i < output.length ;  i++ ) {
+        for(var i =0 ; i < output.length ;  i++ ) {          
+          
           string += output[i].name +"  "+output[i].id+"  "+output[i].mimeType + "\n" 
+          
+          batchGetValues(output[i].id);
+          
         } ;       
   
          
