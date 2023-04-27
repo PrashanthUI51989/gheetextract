@@ -153,7 +153,7 @@ function handleSignoutClick() {
     }
 }
 
-function batchGetValues(spreadsheetId) {
+async function batchGetValues(spreadsheetId) {
 
     let ranges = [
         "A2:C4"
@@ -183,11 +183,8 @@ function batchGetValues(spreadsheetId) {
  * Print metadata for first 10 files.
  */
 async function listFiles() {
-  
 
-  
-  
-/*    let response;
+    let response;
     try {
         response = await gapi.client.drive.files.list({
             'pageSize': 10,
@@ -209,14 +206,15 @@ async function listFiles() {
 
     for (var i = 0; i < output.length; i++) {
 
-        string += output[i].name + "  " + output[i].id + "  " + output[i].mimeType + "\n"
+        string += output[i].name + "  " + output[i].id + "  " + output[i].mimeType + "\n"      
 
-        batchGetValues(output[i].id);
+         await batchGetValues(output[i].id);
+      
 
     };
 
 
-    document.getElementById('content').innerText = string; */
+    document.getElementById('content').innerText = string; 
   
   
 }
