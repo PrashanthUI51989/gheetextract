@@ -124,7 +124,7 @@
         try {
           response = await gapi.client.drive.files.list({
             'pageSize': 10,
-            'fields': 'files(id, name)',
+            'fields': 'files(id, name,mimeType)',
           });
         } catch (err) {
           document.getElementById('content').innerText = err.message;
@@ -139,8 +139,7 @@
         console.log(files);
         // Flatten to string to display
         const output = files.reduce(
-            (str, file) => `${str}${file.name} (${file.id})\n`,
-            'Files:\n');
+            (str, file) => `${str} ${file.name} (${file.id})  (${file.mimeType}) \n`,'Files:\n');
         document.getElementById('content').innerText = output;
       }
     </script>
