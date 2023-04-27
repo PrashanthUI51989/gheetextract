@@ -138,14 +138,14 @@
         
           const output = files.filter(file => file.mimeType === "application/vnd.google-apps.spreadsheet");
         
+        let string ="" ;
+        
+        for(var i =0 ; i < output.length ;  i++ ) {
+          string += output[i].name +"  "+output[i].id+"  "+output[i].mimeType + "\n" 
+        } ;       
   
-        // Flatten to string to display
-       // const output = files.reduce(
-        //    (str, file) => `${str} ${file.name} (${file.id})  (${file.mimeType}) \n`,'Files:\n');
-        
-        console.log(output);
-        
-        document.getElementById('content').innerText = output;
+         
+        document.getElementById('content').innerText = string;
       }
     </script>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
