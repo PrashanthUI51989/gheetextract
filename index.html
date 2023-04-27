@@ -38,7 +38,7 @@ function gapiLoaded() {
 async function intializeGapiClient() {
 	await gapi.client.init({
 		apiKey: GOOGLE_API_KEY,
-		discoveryDocs: [DISCOVERY_DOC],
+		discoveryDocs: DISCOVERY_DOC
 	});
 	gapiInited = true;
 	maybeEnableButtons();
