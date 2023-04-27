@@ -15,18 +15,11 @@ const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4'
 // multiple scope can he included separated by space
 //const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
 	
- const aLists = [
-        // See, edit, create, and delete all of your Google Drive files
-        'https://www.googleapis.com/auth/drive',
+ const aLists = [       
 
-        // See, edt, create, and delete only the specific Google Drive files you use with this app
-        'https://www.googleapis.com/auth/drive.file',
-
-        // See and download all your Google Drive files
-        'https://www.googleapis.com/auth/drive.readonly',     
-
-        // See all your Google Sheets spreadsheets
         'https://www.googleapis.com/auth/spreadsheets.readonly',
+      
+        'https://www.googleapis.com/auth/drive.metadata.readonly' 
     ]; 
       
       
