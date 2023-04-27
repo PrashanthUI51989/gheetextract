@@ -13,17 +13,8 @@ const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4'
 
 // Authorization scope should be declared for spreadsheet handing
 // multiple scope can he included separated by space
-//const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
+const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
 	
- const aLists = [       
-
-        'https://www.googleapis.com/auth/spreadsheets.readonly',
-      
-        'https://www.googleapis.com/auth/drive.metadata.readonly' 
-    ]; 
-      
-      
-const SCOPES = aLists.join(" ");  	
 
 let tokenClient;
 let gapiInited = false;
