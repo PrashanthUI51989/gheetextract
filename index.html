@@ -29,15 +29,8 @@
 
       // Authorization scopes required by the API; multiple scopes can be
       // included, separated by spaces.
-     // const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';
-    
       
-      const aScopes = [
-        "https://www.googleapis.com/auth/spreadsheets",
-        "https://www.googleapis.com/auth/drive.metadata.readonly"   
-       ]
-      
-       const SCOPES = aScopes.join(' ');
+      const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';      
 
       let tokenClient;
       let gapiInited = false;
@@ -59,8 +52,7 @@
        */
       async function initializeGapiClient() {
         await gapi.client.init({
-          apiKey: API_KEY,
-          scope: SCOPES,
+          apiKey: API_KEY,         
           discoveryDocs: [DISCOVERY_DOC],
         });
         gapiInited = true;
