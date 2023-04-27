@@ -91,11 +91,15 @@ async function aSheetsAuthorize() {
         },
         authResult => {
             if (authResult && !authResult.error) {
+              
+               await listFiles();
 
                 /* handle successful authorization */
 
 
             } else {
+              
+              console.log("error");
                 /* handle authorization error */
             }
         });
@@ -136,7 +140,7 @@ function handleAuthClick() {
         document.getElementById('authorize_button').innerText = 'Refresh';
 
         await aSheetsAuthorize();
-        await listFiles();
+       
 
 
     };
