@@ -155,14 +155,11 @@ function handleSignoutClick() {
 
 async function batchGetValues(spreadsheetId) {
 
-    let ranges = [
-        "A2:C4"
-    ];
-
     try {
         gapi.client.sheets.spreadsheets.values.batchGet({
             spreadsheetId: spreadsheetId,
-            ranges: ranges,
+            range: "Sheet1",
+            valueInputOption: "USER_ENTERED",
         }).then((response) => {
 
             const result = response.result;
@@ -220,7 +217,7 @@ async function listFiles() {
     </script>
     
   
-    <script async defer src="https://apis.google.com/js/client.js" onload="gapiLoaded()"></script>  
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>  
     <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
   </body>
 </html>
