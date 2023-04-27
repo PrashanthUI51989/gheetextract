@@ -4,211 +4,205 @@
 <head>
 <title>Google Sheets JavaScript API Spreadsheet Tutorial</title>
 <script>
-  // You should set your Google client ID and Google API key
-const GOOGLE_CLIENT_ID = '1075917549655-gan0csml942393lfq2dghfonct93q46j.apps.googleusercontent.com';
-const GOOGLE_API_KEY = 'AIzaSyCBzlr-DECihJw7iPn1ZWdyTZSA5XJp3KI';
-//
-	
-	
+	 // You should set your Google client ID and Google API key
+  const GOOGLE_CLIENT_ID = '1075917549655-gan0csml942393lfq2dghfonct93q46j.apps.googleusercontent.com';
+  const GOOGLE_API_KEY = 'AIzaSyCBzlr-DECihJw7iPn1ZWdyTZSA5XJp3KI';
 
-const DISCOVERY_DOC = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest","https://sheets.googleapis.com/$discovery/rest?version=v4"];
+  const DISCOVERY_DOC = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest", "https://sheets.googleapis.com/$discovery/rest?version=v4"];
 
-// Authorization scope should be declared for spreadsheet handing
-// multiple scope can he included separated by space
-	
+  // Authorization scope should be declared for spreadsheet handing
+  // multiple scope can he included separated by space
 
 
-let tokenClient;
-let gapiInited = false;
-let gisInited = false;
-document.getElementById('authorize_btn').style.visibility = 'hidden';
-document.getElementById('signout_btn').style.visibility = 'hidden';
 
-/**
- * Callback after api.js is loaded.
- */
-function gapiLoaded() {
-	gapi.load('client', intializeGapiClient);
-}
+  let tokenClient;
+  let gapiInited = false;
+  let gisInited = false;
+  document.getElementById('authorize_btn').style.visibility = 'hidden';
+  document.getElementById('signout_btn').style.visibility = 'hidden';
 
-/**
- * Callback after the Google API client is loaded. Loads the
- * discovery doc to initialize the API.
- */
-async function intializeGapiClient() {
-	await gapi.client.init({
-		apiKey: GOOGLE_API_KEY,
-		discoveryDocs: DISCOVERY_DOC
-	});
-	gapiInited = true;
-	maybeEnableButtons();
-}
-	
-	
+  /**
+   * Callback after api.js is loaded.
+   */
+  function gapiLoaded() {
+      gapi.load('client', intializeGapiClient);
+  }
 
-/**
- * Callback after Google Identity Services are loaded.
- */
-function gisLoaded() {
-	
-tokenClient = google.accounts.oauth2.initTokenClient({
- client_id: GOOGLE_CLIENT_ID,
-  scope: 'https://www.googleapis.com/auth/spreadsheets.readonly \
+  /**
+   * Callback after the Google API client is loaded. Loads the
+   * discovery doc to initialize the API.
+   */
+  async function intializeGapiClient() {
+      await gapi.client.init({
+          apiKey: GOOGLE_API_KEY,
+          discoveryDocs: DISCOVERY_DOC
+      });
+      gapiInited = true;
+      maybeEnableButtons();
+  }
+
+
+
+  /**
+   * Callback after Google Identity Services are loaded.
+   */
+  function gisLoaded() {
+
+      tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: GOOGLE_CLIENT_ID,
+          scope: 'https://www.googleapis.com/auth/spreadsheets.readonly \
           https://www.googleapis.com/auth/drive.file \
           https://www.googleapis.com/auth/drive.readonly',
-  callback: (tokenResponse) => {
-	
-    if (tokenResponse && tokenResponse.access_token) {
-      if (google.accounts.oauth2.hasGrantedAnyScope(tokenResponse,
-          'https://www.googleapis.com/auth/spreadsheets.readonly')) {	   
-	      
-	      console.log("Spreed sheet granted");
-	      
-          
+          callback: (tokenResponse) => {
+
+              if (tokenResponse && tokenResponse.access_token) {
+                  if (google.accounts.oauth2.hasGrantedAnyScope(tokenResponse,
+                          'https://www.googleapis.com/auth/spreadsheets.readonly')) {
+
+                      console.log("Spreed sheet granted");
+
+
+                  }
+                  if (google.accounts.oauth2.hasGrantedAllScopes(tokenResponse,
+                          'https://www.googleapis.com/auth/drive.file',
+                          'https://www.googleapis.com/auth/drive.readonly')) {
+
+                      gisInited = true;
+
+                      maybeEnableButtons();
+
+
+
+                  }
+
+
+              }
+          },
+      });
+
+  }
+
+  /**
+   * Enables user interaction after all libraries are loaded.
+   */
+  function maybeEnableButtons() {
+      if (gapiInited && gisInited) {
+          document.getElementById('authorize_btn').style.visibility = 'visible';
       }
-      if (google.accounts.oauth2.hasGrantedAllScopes(tokenResponse,
-          'https://www.googleapis.com/auth/drive.file',
-          'https://www.googleapis.com/auth/drive.readonly')) {
-	      
-	      gisInited = true;	
-	
-	      maybeEnableButtons();
-	      
-	     
-        
+  }
+
+  /**
+   *  Sign in the user upon button click.
+   */
+  function authorizeGoogleAccess() {
+
+      tokenClient.callback = async (resp) => {
+          if (resp.error !== undefined) {
+              throw (resp);
+          }
+          document.getElementById('signout_btn').style.visibility = 'visible';
+          document.getElementById('authorize_btn').innerText = 'Refresh';
+
+          await listFiles();
+      };
+
+      if (gapi.client.getToken() === null) {
+          // Prompt the user to select a Google Account and ask for consent to share their data
+          // when establishing a new session.
+          tokenClient.requestAccessToken({
+              prompt: 'consent'
+          });
+      } else {
+          // Skip display of account chooser and consent dialog for an existing session.
+          tokenClient.requestAccessToken({
+              prompt: ''
+          });
       }
-	    
-	    
-    }
-  },
-});
-	
-	
-	
-	
-}
+  }
 
-/**
- * Enables user interaction after all libraries are loaded.
- */
-function maybeEnableButtons() {
-	if (gapiInited && gisInited) {
-		document.getElementById('authorize_btn').style.visibility = 'visible';
-	}
-}
-
-/**
- *  Sign in the user upon button click.
- */
-function authorizeGoogleAccess() {
-	
-	tokenClient.callback = async (resp) => {
-		if (resp.error !== undefined) {
-			throw (resp);
-		}
-		document.getElementById('signout_btn').style.visibility = 'visible';
-		document.getElementById('authorize_btn').innerText = 'Refresh';
-		
-		await listFiles();
-	};
-
-	if (gapi.client.getToken() === null) {
-		// Prompt the user to select a Google Account and ask for consent to share their data
-		// when establishing a new session.
-		tokenClient.requestAccessToken({ prompt: 'consent' });
-	} else {
-		// Skip display of account chooser and consent dialog for an existing session.
-		tokenClient.requestAccessToken({ prompt: '' });
-	}
-}
-
-/**
- *  Sign out the user upon button click.
- */
-function signoutGoogle() {
-	const token = gapi.client.getToken();
-	if (token !== null) {
-		google.accounts.oauth2.revoke(token.access_token);
-		gapi.client.setToken('');
-		document.getElementById('content').innerText = '';
-		document.getElementById('authorize_btn').innerText = 'Authorize';
-		document.getElementById('signout_btn').style.visibility = 'hidden';
-	}
-}
+  /**
+   *  Sign out the user upon button click.
+   */
+  function signoutGoogle() {
+      const token = gapi.client.getToken();
+      if (token !== null) {
+          google.accounts.oauth2.revoke(token.access_token);
+          gapi.client.setToken('');
+          document.getElementById('content').innerText = '';
+          document.getElementById('authorize_btn').innerText = 'Authorize';
+          document.getElementById('signout_btn').style.visibility = 'hidden';
+      }
+  }
 
 
-async function listMajors(excelid) {
-	let response;
-	try {
-		
-		response = await gapi.client.sheets.spreadsheets.values.get({
-			spreadsheetId: excelid,
-			range: "Sheet1"
-		});
-	} catch (err) {
-		document.getElementById('content_one').innerText = err.message;
-		return;
-	}
-	const range = response.result;
-	if (!range || !range.values || range.values.length == 0) {
-		document.getElementById('content_one').innerText = 'No values found.';
-		return;
-	}
-	const output = range.values.reduce(
-		(str, row) => `${str}${row[0]}, ${row[2]}\n`);
-	
-	
-	document.getElementById('content_one').innerText = output;
-}
+  async function listMajors(excelid) {
+      let response;
+      try {
 
-async function listFiles() {
-
-    let response;
-	
-    try {
-        response = await gapi.client.drive.files.list({            
-            'fields': 'files(id, name,mimeType)'
-        });
-    } catch (err) {
-        document.getElementById('content').innerText = err.message;
-        return;
-    }
-    const files = response.result.files;
-    if (!files || files.length == 0) {
-        document.getElementById('content').innerText = 'No files found.';
-        return;
-    }
-
-    const output = files.filter(file => file.mimeType === "application/vnd.google-apps.spreadsheet");
-
-    let string = "";
-
-    for (var i = 0; i < output.length; i++) {
-
-        string += output[i].name + "  " + output[i].id + "  " + output[i].mimeType + "\n";    
-	    
-	await listMajors(output[i].id);    
-    };
+          response = await gapi.client.sheets.spreadsheets.values.get({
+              spreadsheetId: excelid,
+              range: "Sheet1"
+          });
+      } catch (err) {
+          document.getElementById('content_one').innerText = err.message;
+          return;
+      }
+      const range = response.result;
+      if (!range || !range.values || range.values.length == 0) {
+          document.getElementById('content_one').innerText = 'No values found.';
+          return;
+      }
+      const output = range.values.reduce(
+          (str, row) => `${str}${row[0]}, ${row[2]}\n`);
 
 
-    document.getElementById('content').innerText = string; 
-  
+      document.getElementById('content_one').innerText = output;
+  }
 
-  
-  
-}
-	
-  </script>  
+  async function listFiles() {
+
+      let response;
+
+      try {
+          response = await gapi.client.drive.files.list({
+              'fields': 'files(id, name,mimeType)'
+          });
+      } catch (err) {
+          document.getElementById('content').innerText = err.message;
+          return;
+      }
+      const files = response.result.files;
+      if (!files || files.length == 0) {
+          document.getElementById('content').innerText = 'No files found.';
+          return;
+      }
+
+      const output = files.filter(file => file.mimeType === "application/vnd.google-apps.spreadsheet");
+
+      let string = "";
+
+      for (var i = 0; i < output.length; i++) {
+
+          string += output[i].name + "  " + output[i].id + "  " + output[i].mimeType + "\n";
+
+          await listMajors(output[i].id);
+      };
+
+
+      document.getElementById('content').innerText = string;
+
+
+  }
+
+</script>  
 </head>
   
 <body>
     <div class="phppot-container">
-        <h1>Google Sheets JavaScript API Spreadsheet Tutorial</h1>
-        <p>This tutorial is to help you learn on how to read Google
-            Sheets (spreadsheet) using JavaScript Google API.</p>
+        <h1>Google Sheets JavaScript API Spreadsheet Tutorial</h1>     
         <button id="authorize_btn" onclick="authorizeGoogleAccess()">Authorize
             Google Sheets Access</button>
-
+	    
         <button id="signout_btn" onclick="signoutGoogle()">Sign
             Out</button>
 
