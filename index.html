@@ -65,47 +65,6 @@ async function initializeGapiClient() {
 
 }
 
-async function aSheetsAuthorize() {
-
-    const scope = [
-        // See, edit, create, and delete all of your Google Drive files
-        'https://www.googleapis.com/auth/drive',
-
-        // See, edt, create, and delete only the specific Google Drive files you use with this app
-        'https://www.googleapis.com/auth/drive.file',
-
-        // See and download all your Google Drive files
-        'https://www.googleapis.com/auth/drive.readonly',
-
-        // See, edit, create, and delete all your Google Sheets spreadsheets
-        'https://www.googleapis.com/auth/spreadsheets',
-
-        // See all your Google Sheets spreadsheets
-        'https://www.googleapis.com/auth/spreadsheets.readonly',
-    ];
-
-    gapi.auth.authorize({
-            client_id: CLIENT_ID,
-            scope: scope,
-            immediate: true
-        },
-        authResult => {
-            if (authResult && !authResult.error) {
-              
-               await listFiles();
-
-                /* handle successful authorization */
-
-
-            } else {
-              
-              console.log("error");
-                /* handle authorization error */
-            }
-        });
-
-}
-
 /**
  * Callback after Google Identity Services are loaded.
  */
@@ -138,8 +97,8 @@ function handleAuthClick() {
         }
         document.getElementById('signout_button').style.visibility = 'visible';
         document.getElementById('authorize_button').innerText = 'Refresh';
-
-        await aSheetsAuthorize();
+      
+      await listFiles(); 
        
 
 
@@ -204,7 +163,45 @@ function batchGetValues(spreadsheetId) {
  */
 async function listFiles() {
   
-    let response;
+  const scope = [
+        // See, edit, create, and delete all of your Google Drive files
+        'https://www.googleapis.com/auth/drive',
+
+        // See, edt, create, and delete only the specific Google Drive files you use with this app
+        'https://www.googleapis.com/auth/drive.file',
+
+        // See and download all your Google Drive files
+        'https://www.googleapis.com/auth/drive.readonly',
+
+        // See, edit, create, and delete all your Google Sheets spreadsheets
+        'https://www.googleapis.com/auth/spreadsheets',
+
+        // See all your Google Sheets spreadsheets
+        'https://www.googleapis.com/auth/spreadsheets.readonly',
+    ];
+  
+    await gapi.auth.authorize({
+            client_id: CLIENT_ID,
+            scope: scope,
+            immediate: true
+        },
+        authResult => {
+            if (authResult && !authResult.error) {         
+               
+              
+              console.log(authResult);
+
+                /* handle successful authorization */
+
+
+            } else {
+              
+              console.log("error");
+                /* handle authorization error */
+            }
+        });
+  
+/*    let response;
     try {
         response = await gapi.client.drive.files.list({
             'pageSize': 10,
@@ -233,7 +230,9 @@ async function listFiles() {
     };
 
 
-    document.getElementById('content').innerText = string;
+    document.getElementById('content').innerText = string; */
+  
+  
 }
 
     </script>
