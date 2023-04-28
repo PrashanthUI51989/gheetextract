@@ -136,7 +136,7 @@
   }
 
 
- aync function listMajors(excelid) {
+ async function listMajors(excelid) {
       let response;
       try {
 
@@ -190,13 +190,13 @@
 
       for (var i = 0; i < output.length; i++) {	      
 	      
-	   customers.push([j, output[i].name, output[i].id,"<button type='button'>Extract</button>"]);     
+	   customers.push([j, output[i].name, output[i].id,"<button type='button' >Extract</button>"]);     
 	      
 	   j++;
 
           // string += output[i].name + "  " + output[i].id + "  " + output[i].mimeType + "\n";
 
-         // await listMajors(output[i].id);
+          await listMajors(output[i].id);
       };
 	  
 	  GenerateTable(customers);
