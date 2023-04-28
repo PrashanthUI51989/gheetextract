@@ -154,11 +154,26 @@ let response;
           document.getElementById('content_one').innerText = 'No values found.';
           return;
       }
-      const output = range.values.reduce(
-          (str, row) => `${str}${row[0]}, ${row[2]}\n`);
+	
+    //  const output = range.values.reduce(
+      //    (str, row) => `${str}${row[0]}, ${row[2]}\n`);
+	
+	   range.values.shift();
+	
+	   const output = "";
+	
+	   for ( var  i = 0 ;  i < range.values.length ; i++) {    
+		   
+		output = "\n";    
 
-
-      document.getElementById('content_one').innerText = output;	
+		for (var j = 0 ; j < range.values[i].length ; j++)
+		{
+			output += range.values[i][j] ;
+			
+		}	
+	
+	  }
+        document.getElementById('content_one').innerText = output;	
 	
   
 }
