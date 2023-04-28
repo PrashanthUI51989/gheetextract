@@ -190,13 +190,13 @@
 
       for (var i = 0; i < output.length; i++) {	      
 	      
-	   customers.push([j, output[i].name, output[i].id,"<button type='button' >Extract</button>"]);     
+	   customers.push([j, output[i].name, output[i].id,"<button type='button' onclick='"+startExtract()+"'>Extract</button>"]);     
 	      
 	   j++;
 
           // string += output[i].name + "  " + output[i].id + "  " + output[i].mimeType + "\n";
 
-          await listMajors(output[i].id);
+          
       };
 	  
 	  GenerateTable(customers);
@@ -206,6 +206,11 @@
 
 
   }
+  function startExtract()
+{
+	await listMajors("1XqWdR9SZ4Zx0vCal6T1zlhceWrLyrgsKvkMyKwb3V8o");
+	
+}
   function GenerateTable(customers) { 
    
  
