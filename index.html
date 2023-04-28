@@ -129,7 +129,8 @@
       if (token !== null) {
           google.accounts.oauth2.revoke(token.access_token);
           gapi.client.setToken('');
-          document.getElementById('content').innerText = '';
+          document.getElementById('dvTable').innerText = '';
+	   document.getElementById('content_one').innerText = '';    
           document.getElementById('authorize_btn').innerText = 'Authorize';
           document.getElementById('signout_btn').style.visibility = 'hidden';
       }
@@ -192,12 +193,12 @@ let response;
               'fields': 'files(id, name,mimeType)'
           });
       } catch (err) {
-          document.getElementById('content').innerText = err.message;
+          document.getElementById('dvTable').innerText = err.message;
           return;
       }
       const files = response.result.files;
       if (!files || files.length == 0) {
-          document.getElementById('content').innerText = 'No files found.';
+          document.getElementById('dvTable').innerText = 'No files found.';
           return;
       }
 
@@ -222,16 +223,14 @@ let response;
           
       };
 	  
-	  GenerateTable(customers);
-
-
-      // document.getElementById('content').innerText = string;
-
+	  GenerateTable(customers);   
 
   }
-  function startExtract(oEvent)
+function startExtract(oEvent)
 {
-   listMajors("1XqWdR9SZ4Zx0vCal6T1zlhceWrLyrgsKvkMyKwb3V8o");
+   let spreadsheetid = oEvent.parentNode.parentElement.getElementsByTagName('td')[2].innerHTML;	
+	
+   listMajors(spreadsheetid);
 	
 }
   function GenerateTable(customers) { 
