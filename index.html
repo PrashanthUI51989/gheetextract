@@ -134,10 +134,11 @@
           document.getElementById('signout_btn').style.visibility = 'hidden';
       }
   }
-
-
-  async function listMajors(excelid) {
-      let response;
+	
+	
+const listMajors = async function(excelid) {
+	
+let response;
       try {
 
           response =  await gapi.client.sheets.spreadsheets.values.get({
@@ -157,8 +158,12 @@
           (str, row) => `${str}${row[0]}, ${row[2]}\n`);
 
 
-      document.getElementById('content_one').innerText = output;
-  }
+      document.getElementById('content_one').innerText = output;	
+	
+  
+}
+
+  
 
   async function listFiles() {
 
@@ -208,7 +213,7 @@
   }
   function startExtract()
 {
-	await listMajors("1XqWdR9SZ4Zx0vCal6T1zlhceWrLyrgsKvkMyKwb3V8o");
+   listMajors("1XqWdR9SZ4Zx0vCal6T1zlhceWrLyrgsKvkMyKwb3V8o");
 	
 }
   function GenerateTable(customers) { 
