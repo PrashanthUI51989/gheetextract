@@ -184,13 +184,13 @@
 	  
         var customers = new Array();
 	  
-        customers.push(["Sno", "Spreedsheet Name", "Spreadsheet Id"]);      
+        customers.push(["Sno", "Spreedsheet Name", "Spreadsheet Id" ,"Action"]);      
 	  
 	var j = 1;  
 
       for (var i = 0; i < output.length; i++) {	      
 	      
-	   customers.push([j, output[i].name, output[i].id]);     
+	   customers.push([j, output[i].name, output[i].id,"<button type='button'>Extract</button>"]);     
 	      
 	   j++;
 
