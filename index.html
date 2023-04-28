@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Google Sheets JavaScript API Spreadsheet Tutorial</title>
+<title>Google Sheets JavaScript API Spreadsheet</title>
 <script>
 	 // You should set your Google client ID and Google API key
   const GOOGLE_CLIENT_ID = '1075917549655-gan0csml942393lfq2dghfonct93q46j.apps.googleusercontent.com';
@@ -119,6 +119,8 @@
           });
       }
   }
+	
+  
 
   /**
    *  Sign out the user upon button click.
@@ -180,19 +182,62 @@
       const output = files.filter(file => file.mimeType === "application/vnd.google-apps.spreadsheet");
 
       let string = "";
+	  
+        var customers = new Array();
+	  
+        customers.push(["Sno", "Spreedsheet Name", "Spreadsheet Id"]);      
+	  
+	var j = 1;  
 
-      for (var i = 0; i < output.length; i++) {
+      for (var i = 0; i < output.length; i++) {	      
+	      
+	   customers.push([j, output[i].name, output[i].id]);     
+	      
+	   j++;
 
-          string += output[i].name + "  " + output[i].id + "  " + output[i].mimeType + "\n";
+          // string += output[i].name + "  " + output[i].id + "  " + output[i].mimeType + "\n";
 
-          await listMajors(output[i].id);
+         // await listMajors(output[i].id);
       };
+	  
+	  GenerateTable(customers);
 
 
-      document.getElementById('content').innerText = string;
+      // document.getElementById('content').innerText = string;
 
 
   }
+  function GenerateTable(customers) { 
+   
+ 
+        //Create a HTML Table element.
+        var table = document.createElement("TABLE");
+        table.border = "1";
+ 
+        //Get the count of columns.
+        var columnCount = customers[0].length;
+ 
+        //Add the header row.
+        var row = table.insertRow(-1);
+        for (var i = 0; i < columnCount; i++) {
+            var headerCell = document.createElement("TH");
+            headerCell.innerHTML = customers[0][i];
+            row.appendChild(headerCell);
+        }
+ 
+        //Add the data rows.
+        for (var i = 1; i < customers.length; i++) {
+            row = table.insertRow(-1);
+            for (var j = 0; j < columnCount; j++) {
+                var cell = row.insertCell(-1);
+                cell.innerHTML = customers[i][j];
+            }
+        }
+ 
+        var dvTable = document.getElementById("dvTable");
+        dvTable.innerHTML = "";
+        dvTable.appendChild(table);
+    }		
 
 </script>  
 </head>
@@ -206,7 +251,7 @@
         <button id="signout_btn" onclick="signoutGoogle()">Sign
             Out</button>
 
-        <pre id="content"></pre>
+        <div id="dvTable"></div>
 	<pre id="content_one"></pre>    
     </div>
     <script async defer src="https://apis.google.com/js/api.js"
