@@ -213,7 +213,7 @@ let response;
 
       for (var i = 0; i < output.length; i++) {	      
 	      
-	   customers.push([j, output[i].name, output[i].id,"<button type='button' onclick='startExtract()'>Extract</button>"]);     
+	   customers.push([j, output[i].name, output[i].id,"<button type='button' onclick='startExtract(this)'>Extract</button>"]);     
 	      
 	   j++;
 
@@ -229,7 +229,7 @@ let response;
 
 
   }
-  function startExtract()
+  function startExtract(oEvent)
 {
    listMajors("1XqWdR9SZ4Zx0vCal6T1zlhceWrLyrgsKvkMyKwb3V8o");
 	
