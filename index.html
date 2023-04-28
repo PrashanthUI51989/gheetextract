@@ -136,7 +136,7 @@
   }
 
 
-  async function listMajors(excelid) {
+  function listMajors(excelid) {
       let response;
       try {
 
@@ -190,7 +190,7 @@
 
       for (var i = 0; i < output.length; i++) {	      
 	      
-	   customers.push([j, output[i].name, output[i].id,"<button type='button' onclick='"+ listMajors(output[i].id) + "' >Extract</button>"]);     
+	   customers.push([j, output[i].name, output[i].id,"<button type='button' onclick='listMajors(" + output[i].id + ")' >Extract</button>"]);     
 	      
 	   j++;
 
