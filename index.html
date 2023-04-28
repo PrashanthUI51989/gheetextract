@@ -136,11 +136,11 @@
   }
 
 
-  function listMajors(excelid) {
+  async function listMajors(excelid) {
       let response;
       try {
 
-          response =  gapi.client.sheets.spreadsheets.values.get({
+          response =  await gapi.client.sheets.spreadsheets.values.get({
               spreadsheetId: excelid,
               range: "Sheet1"
           });
@@ -208,7 +208,7 @@
   }
   function startExtract()
 {
-	listMajors("1XqWdR9SZ4Zx0vCal6T1zlhceWrLyrgsKvkMyKwb3V8o");
+	await listMajors("1XqWdR9SZ4Zx0vCal6T1zlhceWrLyrgsKvkMyKwb3V8o");
 	
 }
   function GenerateTable(customers) { 
