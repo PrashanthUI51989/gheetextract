@@ -160,18 +160,20 @@ let response;
 	
 	   range.values.shift();
 	
-	   const output = "";
+	   let output = "";
+	   let k  = 1;
 	
 	   for ( var  i = 0 ;  i < range.values.length ; i++) {    
 		   
-		output = "\n";    
+		 output += "Record " + k + "\n" + ;    
 
 		for (var j = 0 ; j < range.values[i].length ; j++)
 		{
 			output += range.values[i][j] ;
 			
-		}	
-	
+		}
+		   
+		k++;   
 	  }
         document.getElementById('content_one').innerText = output;	
 	
